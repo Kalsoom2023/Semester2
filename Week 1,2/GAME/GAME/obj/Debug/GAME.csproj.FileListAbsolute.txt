@@ -1,0 +1,7 @@
+C:\Users\ADMIN\Desktop\Semester2\Week 1,2\GAME\GAME\bin\Debug\GAME.exe.config
+C:\Users\ADMIN\Desktop\Semester2\Week 1,2\GAME\GAME\bin\Debug\GAME.exe
+C:\Users\ADMIN\Desktop\Semester2\Week 1,2\GAME\GAME\bin\Debug\GAME.pdb
+C:\Users\ADMIN\Desktop\Semester2\Week 1,2\GAME\GAME\obj\Debug\GAME.csproj.AssemblyReference.cache
+C:\Users\ADMIN\Desktop\Semester2\Week 1,2\GAME\GAME\obj\Debug\GAME.csproj.CoreCompileInputs.cache
+C:\Users\ADMIN\Desktop\Semester2\Week 1,2\GAME\GAME\obj\Debug\GAME.exe
+C:\Users\ADMIN\Desktop\Semester2\Week 1,2\GAME\GAME\obj\Debug\GAME.pdb

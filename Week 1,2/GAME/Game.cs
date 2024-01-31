@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading;
-
+using games.bl;
 class Program
 {
     static int pX = 20, pY = 20;
@@ -89,7 +89,8 @@ class Program
         string enemyDirection2 = "down";
         string fireDirection2 = "down";
         string enemyDirection3 = "right";
-
+        Enemy enemy = new Enemy(enemy2D, eX, eY);
+        Player player = new Player(player, pX, pY);
         DrawBoard();
         PrintPlayer();
 
@@ -204,6 +205,7 @@ class Program
     {
         for (int j = 0; j < enemyWidth; j++)
         {
+                
             Console.SetCursorPosition(eX + j, eY + i);
             Console.Write(" ");
         }
