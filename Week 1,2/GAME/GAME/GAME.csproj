@@ -43,8 +43,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="game.bl\Classes.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="..\..\..\Week3\Classes.cs">
+      <Link>game.bl\Classes.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Week3\Program.cs">
+      <Link>Program.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

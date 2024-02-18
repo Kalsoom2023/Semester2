@@ -13,44 +13,12 @@ class Program
     static int gX, gY, vX, vY, dX, dY;
     static int Score = 0;
     static int oX = 25, oY = 10;
-    static int kX = 67, kY = 10;
+    static int kX = 50, kY = 10;
     static string statusEnemy = "alive";
     static string statusPlayer = "alive";
     static int HEALTH = 100;
     const int enemyHeight = 5;
     const int enemyWidth = 11;
-
-    static char[,] player2D = {
-        {' ', ' ', ' ', ' ', ' ', '/', '\\', ' ', ' ', ' ', ' ', ' '},
-        {' ', ' ', ' ', '_', '/', ' ', ' ', '\\', '_', ' ', ' ', ' '},
-        {' ', ' ', '/', ' ', '|', ' ', ' ', '|', ' ', '\\', ' ', ' '},
-        {' ', '=', '=', '=', '.', ' ', ' ', '.', '=', '=', '=', ' '},
-        {' ', ' ', ' ', ' ', '|', '|', '|', '|', ' ', ' ', ' ', ' '}
-    };
-
-    static char[,] enemy2D = {
-        {' ', ' ', ' ', '|', '\\', '_', '/', '|', ' ', ' ', ' '},
-        {'|', '\\', '_', '\\', '*', '=', '*', '/', '_', '/', '|'},
-        {'|', ' ', ' ', ' ', '{', '^', '^', '}', ' ', ' ', '|'},
-        {' ', '\\', ' ', ' ', ' ', '|', '|', ' ', ' ', '/', ' '},
-        {' ', ' ', ' ', ' ', ' ', '/', '\\', ' ', ' ', ' ', ' '}
-    };
-
-    static char[,] enemy22D = {
-        {' ', ' ', ' ', '|', '\\', '_', '/', '|', ' ', ' ', ' '},
-        {'|', '\\', '_', '\\', '*', '=', '*', '/', '_', '/', '|'},
-        {'|', ' ', ' ', ' ', '{', '^', '^', '}', ' ', ' ', '|'},
-        {' ', '\\', ' ', ' ', ' ', '|', '|', ' ', ' ', '/', ' '},
-        {' ', ' ', ' ', ' ', ' ', '/', '\\', ' ', ' ', ' ', ' '}
-    };
-
-    static char[,] enemyD = {
-        {' ', ' ', ' ', '|', '\\', '_', '/', '|', ' ', ' ', ' '},
-        {'|', '\\', '_', '\\', '*', '=', '*', '/', '_', '/', '|'},
-        {'|', ' ', ' ', ' ', '{', '^', '^', '}', ' ', ' ', '|'},
-        {' ', '\\', ' ', ' ', ' ', '|', '|', ' ', ' ', '/', ' '},
-        {' ', ' ', ' ', ' ', ' ', '/', '\\', ' ', ' ', ' ', ' '}
-    };
 
     static char[,] board = {
         {'#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#'},
@@ -80,19 +48,20 @@ class Program
         {'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#'},
         {'#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#'}
     };
-
-    static void Main()
+   
+       
+        static void Main()
     {
-        string direction = "right";
+       
         string enemyDirection = "right";
-        string fireDirection = "right";
+       
         string enemyDirection2 = "down";
-        string fireDirection2 = "down";
+       
         string enemyDirection3 = "right";
-        Enemy enemy = new Enemy(enemy2D, eX, eY);
-        Enemy2 enemy2 = new Enemy2(enemy2D, fX, fY);
-        Enemy3 enemy3 = new Enemy3(enemy2D, cX, cY);
-        Player player = new Player(player2D, pX, pY);
+        Enemy enemy = new Enemy(eX, eY);
+        Enemy enemy2 = new Enemy( fX, fY);
+        Enemy enemy3 = new Enemy( cX, cY);
+        Player player = new Player( pX, pY);
         DrawBoard();
         PrintPlayer(player);
 
@@ -105,22 +74,29 @@ class Program
             if (Console.KeyAvailable)
             {
                 var key = Console.ReadKey(intercept: true).Key;
-                MovePlayer(key,player);
+                ErasePlayer(player);
+                player.MovePlayer(key,player);
+                PrintPlayer(player);
                 if (key == ConsoleKey.Spacebar)
                 {
                     Fire(player,enemy,enemy2,enemy3);
                 }
             }
-
-            MoveEnemy(enemyDirection, enemy);
-            enemyDirection = ChangeDirection(enemyDirection,enemy);
-            FireAtEnemy(enemy);
-            MoveEnemy2(enemyDirection2,enemy2);
-            enemyDirection2 = ChangeDirection2(enemyDirection2,enemy2);
-            FireAtEnemy2(enemy2);
-            enemyDirection3 = ChangeDirection3(enemyDirection3,enemy3);
-            MoveEnemy3(enemyDirection3,enemy3);
-            FireAtEnemy3(enemy3);
+            EraseEnemy(enemy);
+            enemy.MoveEnemy(enemyDirection, enemy);
+            PrintEnemy(enemy);
+            enemyDirection = enemy.ChangeDirection(enemyDirection,enemy);
+            FireAtEnemy(enemy,player);
+            EraseEnemy2(enemy2);
+            enemy2.MoveEnemy2(enemyDirection2,enemy2);
+            PrintEnemy2(enemy2);
+            enemyDirection2 = enemy2.ChangeDirection2(enemyDirection2,enemy2);
+            FireAtEnemy2(enemy2,player);
+            enemyDirection3 = enemy3.ChangeDirection3(enemyDirection3,enemy3);
+            EraseEnemy3(enemy3);
+            enemy3.MoveEnemy3(enemyDirection3,enemy3);
+            PrintEnemy3(enemy3);
+            FireAtEnemy3(enemy3,player);
         }
     }
 
@@ -151,38 +127,13 @@ class Program
         }
     }
 
-    static void MovePlayer(ConsoleKey key,Player player)
-    {
-        ErasePlayer(player);
-
-        switch (key)
-        {
-            case ConsoleKey.LeftArrow:
-                if (player.Y > 1) 
-                player.Y -= 1;
-                break;
-            case ConsoleKey.RightArrow:
-                if (player.Y < 61) 
-                player.Y += 1;
-                break;
-            case ConsoleKey.UpArrow:
-                if (player.X > 1) 
-                player.X -= 1;
-                break;
-            case ConsoleKey.DownArrow:
-                if (player.X < 20) 
-                player.X += 1;
-                break;
-        }
-
-        PrintPlayer(player);
-    }
+   
 
     static void ErasePlayer(Player player)
     {
-        for (int i = 0; i < player2D.GetLength(0); i++)
+        for (int i = 0; i < player.player2D.GetLength(0); i++)
         {
-            for (int j = 0; j < player2D.GetLength(1); j++)
+            for (int j = 0; j < player.player2D.GetLength(1); j++)
             {
                 Console.SetCursorPosition(player.Y + j, player.X + i);
                 Console.Write(" ");
@@ -192,15 +143,15 @@ class Program
 
     static void PrintPlayer(Player player)
     {
-        for (int i = 0; i < player2D.GetLength(0); i++)
+        for (int i = 0; i < player.player2D.GetLength(0); i++)
         {
-            for (int j = 0; j < player2D.GetLength(1); j++)
+            for (int j = 0; j < player.player2D.GetLength(1); j++)
             {
                 Console.ForegroundColor = ConsoleColor.Blue;
 
                 Console.SetCursorPosition(player.Y + j, player.X + i);
 
-                Console.WriteLine(player.DisplayCharacter[i, j]);
+                Console.WriteLine(player.player2D[i, j]);
                 Console.ResetColor();
             }
         }
@@ -228,91 +179,43 @@ class Program
                 Console.ForegroundColor = ConsoleColor.DarkRed;
 
                 Console.SetCursorPosition(enemy.X + j, enemy.Y + i);
-                Console.WriteLine(enemy.DisplayCharacter[i, j]);
+                Console.WriteLine(enemy.enemy2D[i, j]);
                 Console.ResetColor();
             }
         }
     }
-    static void EraseEnemy2(Enemy2 enemy)
+    static void EraseEnemy2(Enemy enemy2)
     {
         for (int i = 0; i < enemyHeight; i++)
         {
             for (int j = 0; j < 14; j++)
             {
-                Console.SetCursorPosition(enemy.X + j, enemy.Y + i);
+                Console.SetCursorPosition(enemy2.X + j, enemy2.Y + i);
                 Console.Write(" ");
             }
         }
     }
 
-    static void PrintEnemy2(Enemy2 enemy)
+    static void PrintEnemy2(Enemy enemy2)
     {
         for (int i = 0; i < enemyHeight; i++)
         {
             for (int j = 0; j < enemyWidth; j++)
             {
                 Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.SetCursorPosition(enemy.X + j, enemy.Y + i);
-                Console.WriteLine(enemy.DisplayCharacter[i, j]);
+                Console.SetCursorPosition(enemy2.X + j, enemy2.Y + i);
+                Console.WriteLine(enemy2.enemy2D[i, j]);
                 Console.ResetColor();
             }
         }
     }
-    static void MoveEnemy(string direction,Enemy enemy)
-    {
-        EraseEnemy(enemy);
+    
+    
 
-        if (direction == "right")
-        {
-            enemy.X = enemy.X + 1;
-        }
-        else if (direction == "left")
-        {
-            enemy.X = enemy.X - 1;
-        }
+   
+    
 
-        PrintEnemy(enemy);
-    }
-    static string ChangeDirection(string direction,Enemy enemy)
-    {
-        if (direction == "right" && enemy.X >= 34)
-        {
-            direction = "left";
-        }
-        else if (direction == "left" && enemy.X <= 2)
-        {
-            direction = "right";
-        }
-        return direction;
-    }
-
-    static string ChangeDirection2(string direction2,Enemy2 enemy2)
-    {
-        if (direction2 == "down" && enemy2.Y >= 15)
-        {
-            direction2 = "up";
-        }
-        else if (direction2 == "up" && enemy2.Y <= 7)
-        {
-            direction2 = "down";
-        }
-        return direction2;
-    }
-    static void MoveEnemy2(string direction2,Enemy2 enemy)
-    {
-        EraseEnemy2(enemy);
-        if (direction2 == "down")
-        {
-            enemy.Y = enemy.Y + 1;
-        }
-        else if (direction2 == "up")
-        {
-            enemy.Y = enemy.Y - 1;
-        }
-        PrintEnemy2(enemy);
-    }
-
-    static void FireAtEnemy(Enemy enemy)
+    static void FireAtEnemy(Enemy enemy,Player player)
     {
         for (int i = 0; i <= 45; i++)
         {
@@ -328,10 +231,11 @@ class Program
                 Console.WriteLine(" ");
                 Console.ResetColor();
             }
+            CheckPlayerCollisionWithFire(player);
         }
     }
 
-    static void FireAtEnemy2(Enemy2 enemy2)
+    static void FireAtEnemy2(Enemy enemy2,Player player)
     {
         for (int i = 0; i <= 45; i++)
         {
@@ -347,10 +251,11 @@ class Program
                 Console.WriteLine(" ");
                 Console.ResetColor();
             }
+            CheckPlayerCollisionWithFire(player);
         }
     }
 
-    static void FireAtEnemy3(Enemy3 enemy3)
+    static void FireAtEnemy3(Enemy enemy3,Player player)
     {
         for (int i = 0; i <= 45; i++)
         {
@@ -366,9 +271,10 @@ class Program
                 Console.WriteLine(" ");
                 Console.ResetColor();
             }
+            CheckPlayerCollisionWithFire(player);
         }
     }
-    static void CheckFireCollision(Enemy enemy,Enemy2 enemy2,Enemy3 enemy3)
+    static void CheckFireCollision(Enemy enemy,Enemy enemy2,Enemy enemy3)
     {
         if (Score == 300)
         {
@@ -401,19 +307,8 @@ class Program
         }
     }
 
-    static string ChangeDirection3(string direction3,Enemy3 enemy3)
-    {
-        if (direction3 == "right" && enemy3.X >= 16)
-        {
-            direction3 = "down";
-        }
-        if (direction3 == "down" && enemy3.Y <= 11)
-        {
-            direction3 = "right";
-        }
-        return direction3;
-    }
-    static void EraseEnemy3(Enemy3 enemy3) //removing enemy
+   
+    static void EraseEnemy3(Enemy enemy3) //removing enemy
     {
         for (int i = 0; i < enemyHeight; i++)
         {
@@ -424,7 +319,7 @@ class Program
             }
         }
     }
-    static void PrintEnemy3(Enemy3 enemy3)  //displaying enemy
+    static void PrintEnemy3(Enemy enemy3)  //displaying enemy
     {
         for (int i = 0; i < enemyHeight; i++)
         {
@@ -432,32 +327,16 @@ class Program
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.SetCursorPosition(enemy3.X + j, enemy3.Y + i);
-                Console.WriteLine(enemyD[i, j]);
+                Console.WriteLine(enemy3.enemy2D[i, j]);
                 Console.ResetColor();
             }
         }
     }
 
-    static void MoveEnemy3(string direction3,Enemy3 enemy)
-    {
-        EraseEnemy3(enemy);
-
-        if (direction3 == "right")
-        {
-            enemy.X = enemy.X + 1;
-            enemy.Y = enemy.Y + 1;
-        }
-        if (direction3 == "down")
-        {
-            enemy.Y = enemy.Y - 1;
-            enemy.X = enemy.X - 1;
-        }
-
-        PrintEnemy3(enemy);
-    }
+    
 
 
-    static void Fire(Player player,Enemy enemy,Enemy2 enemy2,Enemy3 enemy3)
+    static void Fire(Player player,Enemy enemy,Enemy enemy2,Enemy enemy3)
     {
         for (int i = 0; i <= 20; i++)
         {
@@ -485,14 +364,24 @@ class Program
 
     static void Booster()
     {
-        if ((FX == oX && FY == oY) || (FX == kX && FY == kY))
+        if ((FY == oY && FX == oX)|| FY==kY&&FX==kX )
         {
             Score += 20;
             PrintHealth();
         }
     }
 
-    // ... (other methods)
+    static void CheckPlayerCollisionWithFire(Player player)
+    {
+       
+        if ((gY >= player.X && gY <= player.X + player.player2D.GetLength(0)) && (gX >= player.Y && gX <= player.Y + player.player2D.GetLength(1)))
+        {
+           
+            Console.Clear();
+            Console.WriteLine("GAME OVER ------> Player hit by enemy fire");
+            Environment.Exit(0);
+        }
+    }
 
     static void PlayerWon()
     {

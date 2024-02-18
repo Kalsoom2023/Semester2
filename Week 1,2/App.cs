@@ -27,9 +27,10 @@ namespace check
             Console.WriteLine("------------------------------");
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("------------------------------");
-            Console.Write("Enter choice: ");
-            Console.ResetColor();
+            Console.WriteLine("Enter choice: ");
+           
             Console.WriteLine("------------------------------");
+            Console.ResetColor();
             Console.WriteLine();
         }
         static void Header()
@@ -53,12 +54,7 @@ namespace check
             Console.WriteLine();
             Console.ResetColor();
         }
-        static string LowerString(string role)
-        {
-            string smaller = role.ToLower();
-
-            return smaller;
-        }
+       
         static void success()
 
         {
@@ -120,8 +116,9 @@ namespace check
         }
         static void signup(string name, string password, string role, List<MUser> users, ref int count)
         {
+            string path = "C:\\Users\\ADMIN\\Desktop\\users.txt";
             users[count] = new MUser(name, password, role);
-            StoreData(name, password, role);
+            StoreData(path,name, password, role);
             count++;
         }
         static bool validuser(string name, List<MUser> users, ref int count)
@@ -134,9 +131,9 @@ namespace check
             }
             return true;
         }
-        static void StoreData(string name, string password, string role)
+        static void StoreData(string path,string name, string password, string role)
         {
-            string path = "C:\\Users\\ADMIN\\Desktop\\users.txt";
+          
             StreamWriter file = new StreamWriter(path, true);
             file.WriteLine(name + "," + password + "," + role);
             file.Flush();
@@ -174,7 +171,7 @@ namespace check
                 Console.WriteLine("Does not exist");
             }
         }
-        static void readData(List<MUser> users, ref int count)
+        static void readData(List<MUser> users)
         {
             string path = "C:\\Users\\ADMIN\\Desktop\\users.txt";
             if (File.Exists(path))
@@ -230,40 +227,7 @@ namespace check
             Console.WriteLine("Press 9 to exit: ");
             Console.WriteLine("-------------------------------");
         }
-        static bool isValidDate(int dd, int mm, int yy)
-        {
-            if (yy <= 0)
-                return false;
-
-            if (mm <= 0 || mm > 12)
-                return false;
-
-            if (mm == 2)
-            {
-                if (yy % 4 == 0)
-                {
-                    if (dd > 29 || dd <= 0)
-                        return false;
-                }
-                else
-                {
-                    if (dd > 28 || dd <= 0)
-                        return false;
-                }
-            }
-            else if (mm == 1 || mm == 3 || mm == 5 || mm == 7 || mm == 8 || mm == 10 || mm == 12)
-            {
-                if (dd > 31 || dd <= 0)
-                    return false;
-            }
-            else
-            {
-                if (dd > 30 || dd <= 0)
-                    return false;
-            }
-
-            return true;
-        }
+     
         static bool validflight(string numberofflight, List<Flights> flights)
         {
             for (int i = 0; i < flights.Count; i++)
@@ -277,16 +241,16 @@ namespace check
         }
         static void AddFlight(string numberofflight, string date, string destination, string departure, int price, int seatnew, List<Flights> flights, ref int flightcount)
         {
-
+            string path = "C:\\Users\\ADMIN\\Desktop\\flight.txt";
             Flights f = new Flights(numberofflight, date, destination, departure, price, seatnew);
             flights.Add(f);
-            StoreFlight(numberofflight, date, destination, departure, price, seatnew);
+            StoreFlight(path,numberofflight, date, destination, departure, price, seatnew);
 
             flightcount++;
         }
-        static void storeFlight(List<Flights> flights)
+        static void storeFlight(string path,List<Flights> flights)
         {
-            string path = "C:\\Users\\ADMIN\\Desktop\\flight.txt";
+           
             StreamWriter file = new StreamWriter(path);
             for (int i = 0; i < flights.Count; i++)
             {
@@ -295,9 +259,9 @@ namespace check
             file.Flush();
             file.Close();
         }
-        static void StoreFlight(string numberofflight, string flightDate, string flightDestination, string flightDeparture, int flightPrice, int flightSeats)
+        static void StoreFlight(string path,string numberofflight, string flightDate, string flightDestination, string flightDeparture, int flightPrice, int flightSeats)
         {
-            string path = "C:\\Users\\ADMIN\\Desktop\\flight.txt";
+           
             StreamWriter file = new StreamWriter(path, true);
             file.WriteLine(numberofflight + "," + flightDate + "," + flightDestination + "," + flightDeparture + "," + flightPrice + "," + flightSeats);
             file.Flush();
@@ -323,9 +287,10 @@ namespace check
                     break;
                 }
             }
-
-            storebook(books);
-            storeFlight(flights);
+            string path = "C:\\Users\\ADMIN\\Desktop\\book.txt";
+            storebook(path,books);
+            string path1 = "C:\\Users\\ADMIN\\Desktop\\flight.txt";
+            storeFlight(path1,flights);
         }
         static void ViewFlight(List<Flights> flights)
         {
@@ -364,7 +329,8 @@ namespace check
         {
             Message message = new Message(mess);
             messages.Add(message);
-            storemessage(mess);
+            string path = "C:\\Users\\ADMIN\\Desktop\\messages.txt";
+            storemessage(path,mess);
 
 
         }
@@ -381,12 +347,12 @@ namespace check
                     flights[i].flightSeats = seatnew;
                 }
             }
-
-            storeFlight(flights);
+            string path = "C:\\Users\\ADMIN\\Desktop\\flight.txt";
+            storeFlight(path,flights);
         }
-        static void storemessage(string message)
+        static void storemessage(string path,string message)
         {
-            string path = "C:\\Users\\ADMIN\\Desktop\\messages.txt";
+          
             StreamWriter file = new StreamWriter(path, true);
             file.WriteLine(message + ",");
             file.Flush();
@@ -472,8 +438,10 @@ namespace check
                 }
 
             }
-            storeFlight(flights);
-            Storebook(username, number, bookeddate, bookdes, bookdep, bookedprice, seatnew1);
+            string path = "C:\\Users\\ADMIN\\Desktop\\flight.txt";
+            storeFlight(path,flights);
+            string path1 = "C:\\Users\\ADMIN\\Desktop\\book.txt";
+            Storebook(path1,username, number, bookeddate, bookdes, bookdep, bookedprice, seatnew1);
 
         }
         static bool flightisvalid(string username, List<Book> books, string flightnumber)
@@ -535,12 +503,14 @@ namespace check
                 }
 
                 success();
-            storeFlight(flights);
-            storebook(books);
+            string path = "C:\\Users\\ADMIN\\Desktop\\flight.txt";
+            storeFlight(path,flights);
+            string path1 = "C:\\Users\\ADMIN\\Desktop\\book.txt";
+            storebook(path1,books);
         }
-        static void storebook(List<Book> books)
+        static void storebook(string path,List<Book> books)
         {
-            string path = "C:\\Users\\ADMIN\\Desktop\\book.txt";
+            
             StreamWriter file = new StreamWriter(path);
 
             for (int i = 0; i < books.Count; i++)
@@ -588,9 +558,9 @@ namespace check
             }
             return false;
         }
-        static void Storebook(string bookedname, string bookednumber, string bookeddate, string bookeddestination, string bookeddeparture, int bookedprice, int bookedseats)
+        static void Storebook(string path,string bookedname, string bookednumber, string bookeddate, string bookeddestination, string bookeddeparture, int bookedprice, int bookedseats)
         {
-            string path = "C:\\Users\\ADMIN\\Desktop\\book.txt";
+           
             StreamWriter file = new StreamWriter(path, true);
 
             file.WriteLine(bookedname + "," + bookednumber + "," + bookeddate + "," + bookeddestination + "," + bookeddeparture + "," + bookedprice + "," + bookedseats);
@@ -620,22 +590,24 @@ namespace check
                 }
 
 
-                
-            
-        
-        storeFlight(flights);
-        storebook(books);
+
+
+            string path = "C:\\Users\\ADMIN\\Desktop\\flight.txt";
+            storeFlight(path,flights);
+            string path1 = "C:\\Users\\ADMIN\\Desktop\\book.txt";
+            storebook(path1,books);
     }
         static void giverate(string username, string ratings,List <Rate> rates)
         {
             Rate rate = new Rate(username, ratings);
             rates.Add(rate);
-            storerate(username, ratings);
+            string path = "C:\\Users\\ADMIN\\Desktop\\rates.txt";
+            storerate(path,username, ratings);
             
         }
-         static void storerate(string username, string ratings)
+         static void storerate(string path,string username, string ratings)
         {
-            string path = "C:\\Users\\ADMIN\\Desktop\\rates.txt";
+            
             StreamWriter file = new StreamWriter(path, true);
             file.WriteLine(username+ "," + ratings + ",");
             file.Flush();
@@ -1112,7 +1084,7 @@ namespace check
                     m = int.Parse(mm);
                     y = int.Parse(yy);
 
-                    if (isValidDate(d, m, y) == false)
+                    if (flights[0].isValidDate(d, m, y) == false)
                     {
                         Console.WriteLine();
                         Console.WriteLine("invalid");
@@ -1485,7 +1457,7 @@ namespace check
                     m = int.Parse(mm);
                     y = int.Parse(yy);
 
-                    if (isValidDate(d, m, y) == false)
+                    if (flights[0].isValidDate(d, m, y) == false)
 
                     {
                         Console.WriteLine("Invalid");
@@ -1823,7 +1795,7 @@ namespace check
                     Console.WriteLine("Enter role: (Admin or User)");
                     Console.WriteLine("----------------------------");
                     role = Console.ReadLine();
-                    role = LowerString(role);
+                    role = users[count].LowerString(role);
                     if (role != "admin" && role != "user")
                     {
                         Console.ForegroundColor = ConsoleColor.Blue;
